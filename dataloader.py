@@ -35,10 +35,7 @@ keys = [
     'fj_tau1',  #
     'fj_tau21',  #
     'fj_tau3', #
-    'Delta_gen_pt',
-    'fjJMAR_gen_pt',  #
-    'fj_eta',
-    'fj_gen_pt',  #
+    'fj_eta',  #
     'fj_pt',
     'fj_relptdiff',  #
     'fj_sdn2',  #
