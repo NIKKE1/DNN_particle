@@ -1,5 +1,5 @@
-#basic dnn testing for HEP, hardcoded data
-#Niklas Harju
+#basic dnn testing for HEP, hardcoded data load
+#Niklas H.
 #18.6.2020
 #
 
@@ -18,7 +18,7 @@ try:
     from sklearn.metrics import roc_auc_score
     from sklearn.utils.class_weight import compute_class_weight
 except ImportError:
-    print("Module import error: check that requirement modules are installed")
+    print("Module import error: check that required modules are installed")
 
 NUMERIC_FEATURE_KEYS = [
     'fj_sdsj1_pt',  #
