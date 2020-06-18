@@ -48,11 +48,11 @@ def main():
 
     #checking wanted columns are staying
     print(df.head)
-
+    
+    df.sample(frac=1) #additional shuffling of rows
     #df = normalize_minmax(df, NUMERIC_FEATURE_KEYS) #uncomment if you want to use min max norm and comment normstd
     #df = normalize_tf(df, NUMERIC_FEATURE_KEYS)
     
-    df.sample(frac=1) #additional shuffling of rows
     print(df.head)
     #slicing dataset for training and testing.
 
