@@ -1,4 +1,4 @@
-basic dnn testing for HEP, hardcoded data
+#basic dnn testing for HEP, hardcoded data
 #Niklas Harju
 #18.6.2020
 #
