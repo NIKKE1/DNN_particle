@@ -34,7 +34,7 @@ NUMERIC_FEATURE_KEYS = [
     'target'
 ]
 BATCH_SIZE = 32
-EPOCHS = 100
+EPOCHS = 30
 OPTIMIZER = Nadam(learning_rate=0.0001)
 #OPTIMIZER = SGD(learning_rate=0.001, nesterov=True, name='SGD')
 
@@ -130,8 +130,7 @@ def normalize_minmax(df, NUMERIC_FEATURE_KEYS):
         scaler.data_max_
         temp = scaler.transform(temp)
         temp.reshape(-1, )
-        
-df[key] = temp
+        df[key] = temp
     return df
 
 #leakyrelu could be tried instead of relu
