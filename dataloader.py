@@ -1,12 +1,12 @@
+#dataloader for basicdnn.py, hardcoded data paths
 import os
 
 try:
     import uproot
     import logging
     import pandas as pd
+    import numpy as np
     logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] %(levelname)s: %(message)s')
-# import uproot4
-
 
 except ImportError as error:
     print("Installation of uproot missing...")
@@ -28,40 +28,53 @@ df_tt = pd.DataFrame()
 # loading root columns to dataframes
 print("Loading data into dataframes...")
 
-keys = ['fj_sdsj1_pt', 'fj_mass', 'fj_tau1', 'Delta_gen_pt', 'fjJMAR_gen_pt', 'fj_eta','fj_gen_pt','fj_pt','fj_relptdiff','fj_sdn2']
-
-
+keys = [
+    'fj_sdsj1_pt',  #
+    'fj_sdsj2_pt',  #
+    'fj_mass',
+    'fj_tau1',  #
+    'fj_tau21',  #
+    'fj_tau3', #
+    'Delta_gen_pt',
+    'fjJMAR_gen_pt',  #
+    'fj_eta',
+    'fj_gen_pt',  #
+    'fj_pt',
+    'fj_relptdiff',  #
+    'fj_sdn2',  #
+]
 
 for key in keys:
-    df_ll[key] = rootFilell.array(key)
-    df_tt[key] = rootFilett.array(key)
-   
+    df_ll[key] = np.array(rootFilell.array(key))
+    df_tt[key] = np.array(rootFilett.array(key))
 
-df_ll['target'] = 1
+df_ll['target'] = 1 # ll is what we want to find, so it will be the target
 df_tt['target'] = 0
 
-df = pd.concat([df_ll, df_tt])
+print(f"\nShape of df_ll: {df_ll.shape}\n")
+print(f"\nShape of df_tt: {df_tt.shape}\n")
 
-print(f"\nSampling dataframe... \n\n {df.head}")
+df = pd.concat([df_ll, df_tt]) #shuffling done by tensorflow
 
-df = df.sample(frac=1)
+print(df.head)
+print(f"\nShape of df combined: {df.shape}\n")
 
-print(f"\nDataframe sampling worked? \n\n {df.head}")
 
-name = "llttmix.h5" #just changed for this, the name became too long. Will make this nicer later
+name = "llttmix.h5" 
 destination = "datacombined"
 
 # data into .h5
 def data2h5(df, name, destination):
-
     if not os.path.exists(destination):
         os.makedirs(destination)
     output = os.path.join(destination, name)
     logging.info(output)
     if os.path.exists(output):
-        logging.warning('... file already exists ...')
+        logging.warning(' File already exists: OVERWRITING ...')
 
     print(f"\nSaving dataframes into datacombined/{name} ...\n")
     df.to_hdf(output, key='df', mode='w')
 
 data2h5(df, name, destination) #name is chosen keys+.h5 created in folder datacombined
+
+
