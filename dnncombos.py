@@ -19,8 +19,8 @@ try:
     from sklearn.preprocessing import MinMaxScaler
     from sklearn.metrics import roc_auc_score
     from sklearn.utils.class_weight import compute_class_weight
-except ImportError:
-    print("Module import error: check that requirement modules are installed")
+except ModuleNotFoundError as err:
+    print(err)
 
 METRICS = [
         tf.keras.metrics.TruePositives(name='tp'),
@@ -55,7 +55,7 @@ def main():
     
     for combos in some_combos():
 
-        # clear Keras memory for new layers, reset columns
+        # clear Keras memory for new layers, new column combinations from some_combos()
         tf.keras.backend.clear_session()
 
 
@@ -71,8 +71,8 @@ def main():
         #checking wanted columns are staying
         print(df.head)
 
-        #df = normalize_minmax(df, NUMERIC_FEATURE_KEYS) #uncomment if you want to use min max norm and comment normstd
-        #df = normalize_tf(df, NUMERIC_FEATURE_KEYS)
+        #df = normalize_minmax(df, NUMERIC_FEATURE_KEYS) #uncomment if you want to use min max norm, and comment normstd
+        #df = normalize_tf(df, NUMERIC_FEATURE_KEYS)  #uncomment if you want to use tensorflow normalization
 
         df = df.sample(frac=1) #shuffle data
         print(df.head)
