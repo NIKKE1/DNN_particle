@@ -1,4 +1,4 @@
-basic dnn testing for HEP, hardcoded data
+#basic dnn testing for HEP with hardcoded data
 #Niklas Harju
 #18.6.2020
 #
@@ -93,14 +93,14 @@ def main():
         class_weights = compute_class_weight('balanced', np.unique(train_y), train_y[:])
         class_weights = {i: class_weights[i] for i in range(2)}
         print(class_weights)
-        #singlegpu_model to enforce a single gpu, multigpu for tensorflows multi
+        
         early_stopping = tf.keras.callbacks.EarlyStopping(
             monitor='val_auc',
             verbose=1,
             patience=4,
             mode='max',
             restore_best_weights=True)
-
+        #singlegpu_model to enforce a single gpu, multigpu for tensorflows multi
         model = singlegpu_model(model_layout())
 
        #saving checkpoints between epochs
