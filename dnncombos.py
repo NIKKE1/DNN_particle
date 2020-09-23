@@ -1,6 +1,6 @@
 #basic dnn testing for HEP with hardcoded data
 #Niklas Harju
-#18.6.2020
+#23.9.2020
 #
 
 try:
