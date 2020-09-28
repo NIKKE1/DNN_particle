@@ -33,37 +33,43 @@ NUMERIC_FEATURE_KEYS = [
     'fj_sdn2',  #
     'target'
 ]
-BATCH_SIZE = 32
-EPOCHS = 30
-OPTIMIZER = Nadam(learning_rate=0.0001)
+BATCH_SIZE = 256
+EPOCHS = 70
+OPTIMIZER = Nadam(learning_rate=0.001)
 #OPTIMIZER = SGD(learning_rate=0.001, nesterov=True, name='SGD')
 
 def main():
-    # load data with dataloader.py , columns are hard-coded
-    df = pd.read_hdf('datacombined/llttmix.h5', 'df')  #
+    train = pd.read_hdf('datacombined/train.h5', 'df') 
+    test = pd.read_hdf('datacombined/test.h5', 'df')
+    val = pd.read_hdf('datacombined/val.h5', 'df')
+
 
     #drop fj's that you dont want to inspect
-    columns_to_drop = [key for key in df.columns if key not in NUMERIC_FEATURE_KEYS ]
-    df.drop(df[columns_to_drop], axis=1, inplace=True)
+    #  columns_to_drop = [key for key in df.columns if key not in NUMERIC_FEATURE_KEYS]
+    #  df.drop(df[columns_to_drop], axis=1, inplace=True)
 
-    #checking wanted columns are staying
-    print(df.head)
-    
-    df.sample(frac=1) #additional shuffling of rows
+    TT, LL = np.bincount(train['target'])
+    total = TT + LL
+    print(f'Examples:\n    Total: {total}\n    LL: {LL} ({100 * LL / total}% of total)\n')
+
     #df = normalize_minmax(df, NUMERIC_FEATURE_KEYS) #uncomment if you want to use min max norm and comment normstd
     #df = normalize_tf(df, NUMERIC_FEATURE_KEYS)
-    
-    print(df.head)
-    #slicing dataset for training and testing.
 
-    train, test = train_test_split(df, test_size=0.2)
+
     train_y = train.target
     test_y = test.target
+    val_y = val.target
     train.pop('target')
     test.pop('target')
+    val.pop('target')
+    val_x = val
     train_x = train
     test_x = test
-    train_x, test_x = normalize_std(train_x, test_x) #comment this out if you are using normalize_minmax
+
+    train_x = normalize_std(train_x) #comment this out if you are using normalize_minmax
+    test_x = normalize_std(test_x)
+    val_x = normalize_std(val_x)
+
 
     # Weight the training samples so that there is equal weight on ll and tt
     # even if there are different amount of them in the training set
@@ -74,11 +80,11 @@ def main():
     #singlegpu_model to enforce a single gpu, multigpu for tensorflows multi
     model = singlegpu_model(model_layout())
 
-   #saving checkpoints between epochs
+    #saving checkpoints between epochs
 
-   #checkpoint_path = "models/cp.ckpt"  #Saving commented out since it seems to produce bugs occasionally
-   #checkpoint_dir = os.path.dirname(checkpoint_path)
-   #cp_callback = ModelCheckpoint(filepath=checkpoint_path, save_weights_only=True, verbose=1)
+    #checkpoint_path = "models/cp.ckpt"  #Saving commented out since it seems to produce bugs occasionally
+    #checkpoint_dir = os.path.dirname(checkpoint_path)
+    #cp_callback = ModelCheckpoint(filepath=checkpoint_path, save_weights_only=True, verbose=1)
 
     model.fit(train_x,
               train_y,
@@ -104,12 +110,10 @@ def main():
 # Normalize the features options: std, tensorflow norm, minmax(0-1).
 
 def normalize_std(train_x, test_x):
-    train_x_mean = train_x.mean()
-    train_x_std = train_x.std()
-
-    train_x = (train_x - train_x_mean) / train_x_std
-    test_x = (test_x - train_x_mean) / train_x_std  # this is not normalized to 1 and has negatives, issues with ReLU?
-    return train_x, test_x
+    df_mean = df.mean()
+    df_std = df.std()
+    new_df = (df - df_mean)/df_std
+    return new_df
 
 def normalize_tf(df, NUMERIC_FEATURE_KEYS):
     NUMERIC_FEATURE_KEYS.remove('target')
