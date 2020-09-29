@@ -35,8 +35,8 @@ NUMERIC_FEATURE_KEYS = [
 ]
 BATCH_SIZE = 256
 EPOCHS = 70
-OPTIMIZER = Nadam(learning_rate=0.001)
-#OPTIMIZER = SGD(learning_rate=0.001, nesterov=True, name='SGD')
+#OPTIMIZER = Nadam(learning_rate=0.001)
+OPTIMIZER = SGD(learning_rate=0.256, nesterov=True, name='SGD')
 
 def main():
     train = pd.read_hdf('datacombined/train.h5', 'df') 
