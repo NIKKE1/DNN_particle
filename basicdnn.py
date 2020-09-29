@@ -142,20 +142,21 @@ def normalize_minmax(df, NUMERIC_FEATURE_KEYS):
 def leakyrelu(x):
     return tf.nn.leaky_relu(x, alpha=0.01)
 
-def model_layout():
     model = tf.keras.Sequential([
-        Dense(1024, activation='relu'),
+        Dense(512, activation='relu'),
+       # Dropout(0.3),
+        Dense(512, activation='relu'),
         Dropout(0.3),
-        Dense(1024, activation='relu'),
-        Dropout(0.3),
-        Dense(1024, activation='relu'),
-        Dropout(0.3),
-        Dense(1024, activation='relu'),
+        Dense(512, activation='relu'),
+       # Dropout(0.3),
+        Dense(512, activation='relu'),
         Dropout(0.3),
         Dense(512, activation='relu'),
         Dense(1, activation="sigmoid")
+   
     ])
     return model
+
 
 def multigpu_model(model):
     gpus = tf.config.experimental.list_physical_devices('GPU')
