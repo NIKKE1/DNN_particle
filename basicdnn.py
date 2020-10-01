@@ -109,7 +109,7 @@ def main():
 
 # Normalize the features options: std, tensorflow norm, minmax(0-1).
 
-def normalize_std(train_x, test_x):
+def normalize_std(df):
     df_mean = df.mean()
     df_std = df.std()
     new_df = (df - df_mean)/df_std
