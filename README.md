@@ -1,5 +1,5 @@
 # basicdnn
-Dnn for distinguishing tt and ll from CMS data.
+The first DNN I made for distinguishing tt and ll from CMS data.
 
 usage with hefaistos-server:
 
