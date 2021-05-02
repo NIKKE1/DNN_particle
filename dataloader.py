@@ -4,7 +4,7 @@
 import os
 
 try:
-    import uproot
+    import uproot3 as uproot
     import logging
     import pandas as pd
     import numpy as np
