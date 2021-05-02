@@ -1,4 +1,4 @@
-# A basic DNN to compare more sopihisticated NN's with.
+# A basic DNN made to evaluate performance of more sophisticated NN's.
 The first DNN I made for distinguishing tt and ll from MadGraph5/pythia/delphi generated particle collisions
 
 Usage with hefaistos-server:
