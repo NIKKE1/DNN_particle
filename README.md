@@ -1,5 +1,5 @@
 # A basic DNN made to evaluate performance of more sophisticated NN's.
-The first DNN I made for distinguishing tt and ll from MadGraph5/pythia/delphi generated particle collisions
+The first DNN I made for distinguishing transversal and longitudinal W-bosons from each other. The particle collision data was created with MadGraph5/pythia/delphi.
 
 Usage with hefaistos-server:
 1. Install python package requirements
