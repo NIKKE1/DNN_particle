@@ -5,6 +5,8 @@
 
 try:
     import os
+    
+    import sys
     import matplotlib.pyplot as plt
     import numpy as np
     import pandas as pd
@@ -17,8 +19,9 @@ try:
     from sklearn.preprocessing import MinMaxScaler
     from sklearn.metrics import roc_auc_score
     from sklearn.utils.class_weight import compute_class_weight
-except ImportError:
-    print("Module import error: check that required modules are installed")
+except ModuleNotFoundError as err:
+    print(err)
+    sys.exit()
 
 NUMERIC_FEATURE_KEYS = [
     'fj_sdsj1_pt',  #
@@ -141,7 +144,7 @@ def normalize_minmax(df, NUMERIC_FEATURE_KEYS):
 #leakyrelu could be tried instead of relu
 def leakyrelu(x):
     return tf.nn.leaky_relu(x, alpha=0.01)
-
+def model_layout():
     model = tf.keras.Sequential([
         Dense(512, activation='relu'),
        # Dropout(0.3),
@@ -168,7 +171,7 @@ def multigpu_model(model):
     return model
 
 def singlegpu_model(model):
-    import setGPU
+    import setGPU # running model in least used gpu
     model.compile(optimizer=OPTIMIZER, loss="binary_crossentropy", metrics=['accuracy'])
 
 if __name__ == "__main__":
