@@ -23,7 +23,8 @@ If you dont want a certain data to be included, you can just comment it out with
 
 ## Running with docker
 ```
+docker build . -t basicdnn
 docker run -v "$(pwd):/basicdnn" \
            -v "/work/data/VBS/DNNTuplesAK8/:/work/data/VBS/DNNTuplesAK8/" \
-           --gpus all -it --rm nvcr.io/nvidia/tensorflow:21.04-tf2-py3 bash
+           --gpus all -it --rm basicdnn
 ```
